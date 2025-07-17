@@ -1,5 +1,9 @@
 from decouple import config
 import os
+from pathlib import Path
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 # 基本設定
 SECRET_KEY = config('SECRET_KEY')
@@ -28,6 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_mcp',  # MCP 服務器整合
     'tenants',
 ]
 
@@ -63,20 +68,16 @@ TEMPLATES = [
 WSGI_APPLICATION = 'rls_project.wsgi.application'
 
 # 資料庫設定
+import dj_database_url
+
+DATABASE_URL = config('DATABASE_URL', default='postgres://app_user:app_pass@localhost:5433/rls_db')
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST'),
-        'PORT': config('DB_PORT'),
-        'CONN_MAX_AGE': 0,  # 對於 RLS 重要：避免連線重用造成租戶洩漏
-        # 'OPTIONS': {
-        #     'sslmode': 'require',  # 強制使用 SSL
-        # },
-    }
+    'default': dj_database_url.parse(DATABASE_URL)
 }
+
+# 對於 RLS 重要：避免連線重用造成租戶洩漏
+DATABASES['default']['CONN_MAX_AGE'] = 0
 
 # 日誌設定
 LOGGING = {
@@ -138,6 +139,17 @@ AUTH_USER_MODEL = 'tenants.User'
 
 # 多租戶設定
 TENANT_REQUIRED_PATHS = ['/api/']  # 需要租戶的路徑
+
+# MCP 設定
+MCP_SERVER_TITLE = "Django RLS 多租戶 MCP 服務器"
+MCP_SERVER_INSTRUCTIONS = "提供多租戶系統管理和資料查詢工具"
+MCP_SERVER_VERSION = "1.0.0"
+MCP_LOG_LEVEL = "INFO"
+MCP_LOG_TOOL_REGISTRATION = True
+MCP_LOG_TOOL_DESCRIPTIONS = True
+MCP_PATCH_SDK_GET_CONTEXT = True
+MCP_PATCH_SDK_TOOL_LOGGING = True
+MCP_DIRS = []  # 禁用自動導入，我們手動導入 MCP 工具
 
 LANGUAGE_CODE = 'zh-hant'
 TIME_ZONE = 'Asia/Taipei'
