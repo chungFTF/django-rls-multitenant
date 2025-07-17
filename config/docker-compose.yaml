@@ -1,4 +1,17 @@
 services:
+  # web:
+  #   build: ..
+  #   command: python manage.py runserver 0.0.0.0:8000
+  #   volumes:
+  #     - ..:/app
+  #   ports:
+  #     - "8000:8000"
+  #   depends_on:
+  #     - postgres
+  #   environment:
+  #     - DJANGO_SETTINGS_MODULE=rls_project.settings
+  #     - DATABASE_URL=postgres://postgres:postgres123@postgres:5432/rls_db
+
   postgres:
     image: postgres:15
     environment:
