@@ -17,7 +17,9 @@
 
 ### 什麼是 Row Level Security (RLS)？
 
-Row Level Security (RLS) 是 PostgreSQL 提供的一種資料庫層級的安全功能，它允許您在表的每一行上套用存取控制政策。與傳統的表級別或列級別權限不同，RLS 可以根據特定條件限制用戶對特定行的存取。
+Row Level Security (RLS) 是 PostgreSQL 提供的一種資料庫層級的安全功能，它允許在表的每一行上套用存取控制政策。
+
+與傳統的表級別或列級別權限不同，RLS 可以根據特定條件限制用戶對特定行的存取。
 
 ### 核心概念
 
