@@ -1,16 +1,14 @@
+"""
+URL configuration for rls_project project.
+"""
 from django.contrib import admin
 from django.urls import path
-from django.http import JsonResponse
-
-def test_view(request):
-    return JsonResponse({
-        'message': 'Volume 掛載測試成功！',
-        'status': 'working',
-        'timestamp': '2025-07-16 16:36:00 - 實時更新測試'
-    })
+from tenants import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('test/', test_view, name='test'),
-    path('', test_view, name='home'),  # 根路由也指向測試
+    path('api/branches/', views.branch_list, name='branch_list'),
+    path('api/sales/', views.sales_list, name='sales_list'),
+    path('api/sales-summary/', views.sales_summary, name='sales_summary'),
+    path('api/context-status/', views.context_status, name='context_status'),
 ]
