@@ -32,7 +32,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_mcp',  # MCP 服務器整合
     'tenants',
 ]
 
@@ -139,17 +138,6 @@ AUTH_USER_MODEL = 'tenants.User'
 
 # 多租戶設定
 TENANT_REQUIRED_PATHS = ['/api/']  # 需要租戶的路徑
-
-# MCP 設定
-MCP_SERVER_TITLE = "Django RLS 多租戶 MCP 服務器"
-MCP_SERVER_INSTRUCTIONS = "提供多租戶系統管理和資料查詢工具"
-MCP_SERVER_VERSION = "1.0.0"
-MCP_LOG_LEVEL = "INFO"
-MCP_LOG_TOOL_REGISTRATION = True
-MCP_LOG_TOOL_DESCRIPTIONS = True
-MCP_PATCH_SDK_GET_CONTEXT = True
-MCP_PATCH_SDK_TOOL_LOGGING = True
-MCP_DIRS = []  # 禁用自動導入，我們手動導入 MCP 工具
 
 LANGUAGE_CODE = 'zh-hant'
 TIME_ZONE = 'Asia/Taipei'
