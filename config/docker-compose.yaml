@@ -1,28 +1,39 @@
 services:
-  # web:
-  #   build: ..
-  #   command: python manage.py runserver 0.0.0.0:8000
-  #   volumes:
-  #     - ..:/app
-  #   ports:
-  #     - "8000:8000"
-  #   depends_on:
-  #     - postgres
-  #   environment:
-  #     - DJANGO_SETTINGS_MODULE=rls_project.settings
-  #     - DATABASE_URL=postgres://postgres:postgres123@postgres:5432/rls_db
+  web:
+    build: ..
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ..:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file:
+      - ../.env
+    environment:
+      - DJANGO_SETTINGS_MODULE=rls_project.settings
+      - DB_HOST=postgres
+      - DB_USER=app_user
+      - DB_PASSWORD=app_pass
 
   postgres:
     image: postgres:15
     environment:
       POSTGRES_DB: rls_db
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres123
+      POSTGRES_PASSWORD: postgres
     ports:
       - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ../scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d rls_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
 volumes:
   postgres_data:
